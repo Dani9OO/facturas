@@ -1,0 +1,14 @@
+.scanner, .scanner-data {
+  width: 50%;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main > div {
+  margin-top: 1rem;
+}
