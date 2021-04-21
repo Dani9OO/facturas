@@ -1,0 +1,27 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      Autenticación
+    </mat-card-title>
+    <mat-card-subtitle>
+      Inicie sesión con sus credenciales
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]='form'>
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <input matInput [formControl]='user'>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input matInput [formControl]='pass' type='password'>
+      </mat-form-field>
+    </form>
+    <p *ngIf='!form.valid'>Tu contraseña debe contener 8 caracteres, 1 mayúscula, 1 minúscula y 1 carácter especial</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color='primary' (click)='login(form.value)'>Login</button>
+  </mat-card-actions>
+</mat-card>
+
