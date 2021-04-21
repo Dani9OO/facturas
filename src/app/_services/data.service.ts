@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { Factura, Culpa } from '../common.interfaces';
+import { Factura, Culpa, Usuario } from '../common.interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,15 @@ export class DataService {
     } catch (error) {
       return error;
     }
+  }
+
+  async login(user: string, pass: string) {
+    const query = this.firestore.collection<Usuario>('usuarios', ref => ref.where('usuario', '==', user).where('password', '==', pass));
+    let usuario: any[] = [];
+    query.get().subscribe(x => usuario = x.docs);
+    console.log(usuario);
+    if (!usuario) return new Error('Usuario o contraseña incorrectos');
+    return 'Autenticado éxitosamente';
   }
 
 }
