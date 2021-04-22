@@ -19,7 +19,12 @@ export class DataService {
   async newFactura(evt: string): Promise<string | Error> {
     return new Promise((resolve, reject) => {
       const factura = evt.split('/');
-      const factura$ = this.firestore.collection<Factura>('facturas', ref => ref.where('remision2', '==', factura[3]).limit(1)).valueChanges();
+      const factura$ = this.firestore.collection<Factura>('facturas', ref => ref
+      .where('remision2', '==', factura[3])
+      .where('empresa', '==', factura[0])
+      .where('ordenDeVenta', '==', factura[1])
+      .limit(1)
+      ).valueChanges();
       factura$.subscribe({ next: async (facturas) => {
         if (facturas.length > 0) {
           await this.firestore.collection<Culpa>('culpa').add({ empleado: 'Raúl' });
