@@ -18,13 +18,20 @@ export class DataService {
 
   async newFactura(evt: string): Promise<string | Error> {
     return new Promise((resolve, reject) => {
-      const factura$ = this.firestore.collection<Factura>('facturas', ref => ref.where('remision', '==', evt).limit(1)).valueChanges();
+      const factura = evt.split('/');
+      const factura$ = this.firestore.collection<Factura>('facturas', ref => ref.where('remision2', '==', factura[3]).limit(1)).valueChanges();
       factura$.subscribe({ next: async (facturas) => {
         if (facturas.length > 0) {
           await this.firestore.collection<Culpa>('culpa').add({ empleado: 'Raúl' });
           resolve(new Error(`Factura ${evt} ya existe`));
         } else {
-          await this.firestore.collection('facturas').add({ remision: evt });
+          await this.firestore.collection('facturas').add({
+            empresa: factura[0],
+            ordenDeVenta: factura[1],
+            remision1: factura[2],
+            remision2: factura[3],
+            factura: factura[4]
+          });
           resolve(`Factura ${evt} registrada con éxito`)
         }
       }, error: error => reject(error) });
