@@ -24,9 +24,9 @@ export class DataService {
       .where('empresa', '==', factura[0])
       .where('ordenDeVenta', '==', factura[1])
       .limit(1)
-      ).valueChanges();
-      factura$.subscribe({ next: async (facturas) => {
-        if (facturas.length > 0) {
+      ).get();
+      factura$.subscribe({ next: async (f) => {
+        if (f.docs.length > 0) {
           await this.firestore.collection<Culpa>('culpa').add({ empleado: localStorage.getItem('usuario') || 'Error al obtener usuario' });
           resolve(new Error(`Factura ${evt} ya existe`));
         } else {
@@ -49,11 +49,11 @@ export class DataService {
       .where('usuario', '==', user)
       .where('password', '==', pass)
       .limit(1)
-      ).valueChanges();
+      ).get();
       usuario$.subscribe({ next: async (usuario) => {
-        if(usuario.length > 0) {
-          localStorage.setItem('usuario', usuario[0].usuario)
-          resolve(`${usuario[0].usuario} autenticado con éxito`)
+        if(usuario.docs.length > 0) {
+          localStorage.setItem('usuario', usuario.docs[0].get('nombre'))
+          resolve(`${usuario.docs[0].get('nombre')} autenticado con éxito`)
         } else {
           resolve(new Error('Inicio de sesión inválido, corrobora tus credenciales.'))
         }
