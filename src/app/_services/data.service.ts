@@ -27,7 +27,7 @@ export class DataService {
       ).valueChanges();
       factura$.subscribe({ next: async (facturas) => {
         if (facturas.length > 0) {
-          await this.firestore.collection<Culpa>('culpa').add({ empleado: 'Raúl' });
+          await this.firestore.collection<Culpa>('culpa').add({ empleado: localStorage.getItem('usuario') || 'Error al obtener usuario' });
           resolve(new Error(`Factura ${evt} ya existe`));
         } else {
           await this.firestore.collection('facturas').add({
@@ -44,12 +44,26 @@ export class DataService {
   }
 
   async login(user: string, pass: string) {
-    const query = this.firestore.collection<Usuario>('usuarios', ref => ref.where('usuario', '==', user).where('password', '==', pass));
-    let usuario: any[] = [];
-    query.get().subscribe(x => usuario = x.docs);
-    console.log(usuario);
-    if (!usuario) return new Error('Usuario o contraseña incorrectos');
-    return 'Autenticado éxitosamente';
+    return new Promise((resolve, reject) => {
+      const usuario$ = this.firestore.collection<Usuario>('usuarios', ref => ref
+      .where('usuario', '==', user)
+      .where('password', '==', pass)
+      .limit(1)
+      ).valueChanges();
+      usuario$.subscribe({ next: async (usuario) => {
+        if(usuario.length > 0) {
+          localStorage.setItem('usuario', usuario[0].usuario)
+          resolve(`${usuario[0].usuario} autenticado con éxito`)
+        } else {
+          resolve(new Error('Inicio de sesión inválido, corrobora tus credenciales.'))
+        }
+      }, error: error => reject(error) });
+    })
+  }
+
+  // Implementar logout en algún lugar
+  async logout() {
+    localStorage.removeItem('usuario');
   }
 
 }
