@@ -12,7 +12,7 @@ export class DataService {
   public facturasCollection: AngularFirestoreCollection<Factura>;
 
   constructor(private firestore: AngularFirestore) {
-    this.facturas$ = this.firestore.collection<Factura>('facturas').valueChanges();
+    this.facturas$ = this.firestore.collection<Factura>('facturas').valueChanges({ idField: 'id' });
     this.facturasCollection = this.firestore.collection<Factura>('facturas');
   }
 

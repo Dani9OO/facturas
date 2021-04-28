@@ -1,4 +1,9 @@
 <mat-form-field>
+  <mat-label>Guía</mat-label>
+  <input matInput placeholder="Guía de asignación para factura" [formControl]="guia">
+</mat-form-field>
+
+<mat-form-field>
   <mat-label>Filtro</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Remisión a Buscar">
 </mat-form-field>
@@ -10,6 +15,14 @@
     <ng-container matColumnDef="remision">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Remisión </th>
       <td mat-cell *matCellDef="let row"> {{row.remision}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef> Acciones </th>
+      <td mat-cell *matCellDef="let row">
+        <button mat-raised-button (click)="asignarFactura(row.id, guia.value)" *ngIf="!guia.value" disabled>Asignar Guía</button>
+        <button mat-raised-button (click)="asignarFactura(row.id, guia.value)" *ngIf="guia.value">Asignar Guía</button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

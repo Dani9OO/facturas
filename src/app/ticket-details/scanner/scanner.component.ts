@@ -34,7 +34,12 @@ export class ScannerComponent implements OnInit {
 
   async handleScan(evt: string) {
     this.scannerEnabled = false;
-    const uploaded = await this.data.newFactura(evt);
+    let uploaded;
+    try {
+      uploaded = await this.data.newFactura(evt);
+    } catch (error) {
+      console.error(error);
+    }
     if (uploaded instanceof Error) this.openSnackBar(uploaded.message, 'Error');
     if (typeof uploaded === 'string') this.openSnackBar(uploaded, '✓');
     this.scannedString = evt;

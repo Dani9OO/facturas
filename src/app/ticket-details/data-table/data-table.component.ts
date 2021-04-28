@@ -16,12 +16,13 @@ import { DataService } from '../../_services/data.service';
 })
 export class DataTableComponent implements OnInit {
 
-  displayedColumns: string[] = ['remision'];
+  displayedColumns: string[] = ['remision', 'acciones'];
   dataSource = new MatTableDataSource<Factura>([]);
 
   @ViewChild(MatPaginator) paginator: MatPaginator | null;
   @ViewChild(MatSort) sort: MatSort | null;
 
+  guia = new FormControl();
   input = new FormControl();
 
   constructor(private data: DataService) {
@@ -44,6 +45,11 @@ export class DataTableComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  asignarFactura(id: string, guia: string) {
+    console.log('id', id);
+    console.log('guía', guia);
   }
 
 }
