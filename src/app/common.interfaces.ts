@@ -3,7 +3,8 @@ export interface Factura {
 }
 
 export interface Culpa {
-  empleado: string
+  empleado: string,
+  fecha: Date
 }
 
 export interface Usuario {

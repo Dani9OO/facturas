@@ -19,23 +19,29 @@ export class DataService {
   async newFactura(evt: string): Promise<string | Error> {
     return new Promise((resolve, reject) => {
       const factura = evt.split('/');
+      const guías = factura[3].split('|');
       const factura$ = this.firestore.collection<Factura>('facturas', ref => ref
-      .where('remision2', '==', factura[3])
+      .where('remision', '==', factura[4])
       .where('empresa', '==', factura[0])
       .where('ordenDeVenta', '==', factura[1])
+      .where('guias', 'array-contains-any', guías) // Buscar si ya existe alguna de las guías registradas en el documento
       .limit(1)
       ).get();
       factura$.subscribe({ next: async (f) => {
         if (f.docs.length > 0) {
-          await this.firestore.collection<Culpa>('culpa').add({ empleado: localStorage.getItem('usuario') || 'Error al obtener usuario' });
+          await this.firestore.collection<Culpa>('culpa').add({
+            empleado: localStorage.getItem('usuario') || 'Error al obtener usuario',
+            fecha: new Date()
+          });
           resolve(new Error(`Factura ${evt} ya existe`));
         } else {
           await this.firestore.collection('facturas').add({
             empresa: factura[0],
             ordenDeVenta: factura[1],
-            remision1: factura[2],
-            remision2: factura[3],
-            factura: factura[4]
+            nombreDeCliente: factura[2],
+            guias: guías,
+            remision: factura[4],
+            factura: factura[5]
           });
           resolve(`Factura ${evt} registrada con éxito`)
         }
