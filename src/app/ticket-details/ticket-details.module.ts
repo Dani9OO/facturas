@@ -15,12 +15,15 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ScannerDialogComponent } from './scanner-dialog/scanner-dialog.component';
 
 @NgModule({
   declarations: [
     TicketDetailsComponent,
     ScannerComponent,
-    DataTableComponent
+    DataTableComponent,
+    ScannerDialogComponent
   ],
   imports: [
     CommonModule,
@@ -33,7 +36,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatPaginatorModule,
     MatInputModule,
     MatSnackBarModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDialogModule
   ]
 })
 export class TicketDetailsModule { }
