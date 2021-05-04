@@ -1,5 +1,10 @@
 export interface Factura {
-  remision: string
+  empresa: string,
+  ordenDeVenta: string,
+  nombreDeCliente: string,
+  guias: string[],
+  remision: string,
+  factura: string
 }
 
 export interface Culpa {

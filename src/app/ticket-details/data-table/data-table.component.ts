@@ -54,9 +54,8 @@ export class DataTableComponent implements OnInit {
     }
   }
 
-  asignarFactura(id: string, guia: string) {
-    console.log('id', id);
-    console.log('guía', guia);
+  async asignarFactura(id: string, guía: string) {
+    await this.data.agregarGuía(id, guía);
   }
 
   openSnackBar(message: string, action: string) {

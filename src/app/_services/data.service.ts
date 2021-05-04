@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import firebase from 'firebase/app';
 import { Observable } from 'rxjs';
 import { Factura, Culpa, Usuario } from '../common.interfaces';
 
@@ -81,6 +82,10 @@ export class DataService {
         }
       }, error: error => reject(error) });
     })
+  }
+
+  async agregarGuía(id: string, guía: string) {
+    return this.firestore.collection('facturas').doc(id).update({ guias: firebase.firestore.FieldValue.arrayUnion(guía) });
   }
 
   // Implementar logout en algún lugar
