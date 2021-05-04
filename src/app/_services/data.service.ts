@@ -24,7 +24,6 @@ export class DataService {
       .where('remision', '==', factura[4])
       .where('empresa', '==', factura[0])
       .where('ordenDeVenta', '==', factura[1])
-      .where('guias', 'array-contains-any', guías) // Buscar si ya existe alguna de las guías registradas en el documento
       .limit(1)
       ).get();
       factura$.subscribe({ next: async (f) => {
@@ -62,6 +61,23 @@ export class DataService {
           resolve(`${usuario.docs[0].get('nombre')} autenticado con éxito`)
         } else {
           resolve(new Error('Inicio de sesión inválido, corrobora tus credenciales.'))
+        }
+      }, error: error => reject(error) });
+    })
+  }
+
+  async validarFactura(id: string, guías: String[]) {
+    return new Promise((resolve, reject) => {
+      const factura$ = this.firestore.collection<Factura>('facturas', ref => ref
+      .where('id', '==', id)
+      .where('guias', 'array-contains-any', guías) // Buscar si ya existe alguna de las guías registradas en el documento
+      .limit(1)
+      ).get();
+      factura$.subscribe({ next: async (factura) => {
+        if(factura.docs.length > 0) {
+          resolve(`La factura contienee las guías escaneadas`);
+        } else {
+          resolve(new Error(`La factura no tiene las guías escaneadas`));
         }
       }, error: error => reject(error) });
     })
