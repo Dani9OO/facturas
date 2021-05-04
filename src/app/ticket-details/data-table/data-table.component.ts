@@ -7,6 +7,9 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
 import { DataService } from '../../_services/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ScannerDialogComponent } from '../scanner-dialog/scanner-dialog.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-data-table',
@@ -25,7 +28,11 @@ export class DataTableComponent implements OnInit {
   guia = new FormControl();
   input = new FormControl();
 
-  constructor(private data: DataService) {
+  constructor(
+    private data: DataService,
+    public dialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) {
     this.paginator = this.dataSource.paginator;
     this.sort = this.dataSource.sort;
   }
@@ -50,6 +57,23 @@ export class DataTableComponent implements OnInit {
   asignarFactura(id: string, guia: string) {
     console.log('id', id);
     console.log('guía', guia);
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+
+  validarGuias(id: string) {
+    const dialogRef = this.dialog.open(ScannerDialogComponent, {
+      width: '80%',
+      data: { id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      this.openSnackBar(result, '✓');
+    })
   }
 
 }

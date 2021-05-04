@@ -22,6 +22,7 @@
       <td mat-cell *matCellDef="let row">
         <button mat-raised-button (click)="asignarFactura(row.id, guia.value)" *ngIf="!guia.value" disabled>Asignar Guía</button>
         <button mat-raised-button (click)="asignarFactura(row.id, guia.value)" *ngIf="guia.value">Asignar Guía</button>
+        <button mat-raised-button (click)="validarGuias(row.id)">Validar Guías</button>
       </td>
     </ng-container>
 
