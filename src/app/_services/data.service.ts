@@ -67,7 +67,7 @@ export class DataService {
     })
   }
 
-  async validarFactura(id: string, guías: String[]) {
+  async validarFactura(id: string, guías: String[]): Promise<string | Error> {
     return new Promise((resolve, reject) => {
       const factura$ = this.firestore.collection<Factura>('facturas', ref => ref
       .where('id', '==', id)

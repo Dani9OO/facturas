@@ -71,7 +71,12 @@ export class DataTableComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      this.openSnackBar(result, '✓');
+      if (result instanceof Error) {
+        this.openSnackBar(result.message, 'Error');
+      }
+      if (typeof result === 'string') {
+        this.openSnackBar(result, '✓');
+      }
     })
   }
 
